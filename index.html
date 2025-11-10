@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chop Chop Food Channel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0c0e;
+      --card: #121316;
+      --muted: #8b939e;
+      --text: #e9eef5;
+      --border: #1f242d;
+      --primary: /*#ff5d57;*/ #B59410;
+      --ring: rgba(255,255,255,0.06);
+      --shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+    :root.light {
+      --bg: #ffffff;
+      --card: #f8fafc;
+      --muted: #5b6472;
+      --text: #0d1117;
+      --border: #e5e7eb;
+      --ring: rgba(0,0,0,0.06);
+      --shadow: 0 8px 24px rgba(2,6,23,0.08);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%;scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .container { width: 100%; max-width: 1152px; margin: 0 auto; padding: 0 1rem; }
+    /*header {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px);
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      border-bottom: 1px solid var(--border);
+    }*/
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999; /* make sure it’s above cards */
+      backdrop-filter: blur(10px);
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .9rem 0; }
+    .brand { display: inline-flex; align-items: center; gap: .6rem; font-weight: 600; transform: translateX(0.85rem);}
+    .brand img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+    nav { display: none; gap: 1rem; font-size: .95rem; }
+    @media (min-width: 768px){ nav { display: flex; } }
+    .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .6rem .9rem; border-radius: .75rem; border: 1px solid var(--border); background: var(--card); box-shadow: var(--shadow); cursor: pointer; color: var(--text); }
+    .btn.primary { background: var(--primary); border-color: transparent; color: white; }
+    .btn.ghost { background: transparent; box-shadow: none; }
+    .icon { width: 18px; height: 18px; display: inline-block; }
+
+    .section { padding: 3rem 0; }
+    @media (min-width: 768px){ .section { padding: 4rem 0; } }
+
+    .badge { display:inline-block; padding:.25rem .55rem; border-radius: 999px; background: color-mix(in oklab, var(--primary) 18%, transparent); color: color-mix(in oklab, var(--primary) 92%, white); font-weight:600; font-size:.75rem; }
+
+    .hero { display: grid; align-items: center; gap: 2rem; }
+    @media (min-width: 768px){ .hero { grid-template-columns: 1.15fr 1fr; gap: 2.5rem; } }
+    .hero h1 { font-size: clamp(1.9rem, 2.5vw + 1.2rem, 3.25rem); line-height: 1.1; margin:.5rem 0 1rem; }
+    .hero p { color: var(--muted); max-width: 48ch; }
+    .frame { border-radius: 1.25rem; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); }
+
+    .grid { display: grid; gap: 1rem; }
+    .grid.videos { grid-template-columns: 1fr; }
+    @media (min-width: 640px){ .grid.videos { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px){ .grid.videos { grid-template-columns: repeat(4, 1fr); } }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; box-shadow: var(--shadow); transition: transform .2s ease; }
+    .card:hover { transform: translateY(-2px); }
+    .thumb { position: relative; aspect-ratio: 16/9; overflow: hidden; }
+    .thumb img { width:100%; height:100%; object-fit: cover; transition: transform .3s ease; }
+    .card:hover .thumb img { transform: scale(1.04); }
+    .watch-pill { position: absolute; left: .7rem; bottom: .7rem; background: color-mix(in oklab, white 92%, transparent); color: #0b0c0e; padding:.35rem .6rem; border-radius: 999px; font-size: .72rem; display: inline-flex; align-items: center; gap: .35rem; }
+    :root.light .watch-pill { background: color-mix(in oklab, #000 35%, white); color: white; }
+    .card-body { padding: .9rem .95rem 1rem; }
+    .title { font-size: .98rem; font-weight: 600; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .desc { margin-top:.35rem; color: var(--muted); font-size: .9rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .meta { margin-top:.6rem; color: var(--muted); font-size: .8rem; display:flex; justify-content: space-between; }
+
+    .split { display:grid; gap: 1.5rem; }
+    @media (min-width: 1024px){ .split { grid-template-columns: 1.1fr 1fr; } }
+
+    .searchbar { display:flex; align-items:center; gap:.5rem; border:1px solid var(--border); background: var(--card); padding:.5rem .7rem; border-radius:.8rem; }
+    .searchbar input { all:unset; width:100%; font-size:.95rem; color: var(--text); }
+    .muted { color: var(--muted); }
+
+    .prose h3 { font-size: 1.35rem; margin: 0 0 .6rem; }
+    .prose p { color: var(--muted); line-height: 1.7; }
+    .prose ul { padding-left: 1rem; color: var(--muted); }
+
+    footer { border-top: 1px solid var(--border); }
+    .foot { display:flex; flex-direction: column; gap: .75rem; padding: 1.2rem 0; }
+    @media (min-width: 768px){ .foot { flex-direction: row; align-items: center; justify-content: space-between; } }
+
+    .featured-iframe { width: 100%; aspect-ratio: 16/9; border: 0; }
+    .pill { display:inline-block; padding:.25rem .6rem; border-radius:999px; background: color-mix(in oklab, var(--text) 8%, transparent); color: var(--text); font-size:.75rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container row">
+      <a class="brand" href="#home">
+        <img src="channels4_profile.jpg" alt="logo" />
+        <span>Chop Chop</span>
+      </a>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#featured">Featured</a>
+        <a href="#videos">Videos</a>
+        <a href="#recipes">Recipes</a>
+        <a href="#about">About</a>
+        <a href="#newsletter">Subscribe</a>
+      </nav>
+      <div style="display:flex; gap:.5rem; align-items:center; transform: translateX(-0.95rem);">
+        <button class="btn ghost" id="themeBtn" aria-label="Toggle theme">🌙</button>
+        <!--<a class="btn primary" href="https://youtube.com" target="_blank" rel="noreferrer">▶ Watch</a>-->
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="home" class="section" style="padding-top: 90px;">
+      <div class="container hero">
+        <div>
+          <span class="badge">New episodes weekly</span>
+          <h1>Flavor Explorers. Eat better. <span style="color:var(--primary)">Have fun.</span></h1>
+          <p> As non-experts but passionate food explorers, we seek diverse tastes, cultural connections, and friendships through shared meals.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1rem;">
+            <button class="btn primary" id="watchLatest">▶ Watch latest</button>
+            <a class="btn" href="#newsletter">Get recipes via email</a>
+          </div>
+        </div>
+        <div class="frame">
+          <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1600&auto=format&fit=crop" alt="Delicious dish" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured -->
+    <section id="featured" class="section" style="scroll-margin-top: 90px;">
+      <div class="container split">
+        <div class="frame">
+         <iframe id="featuredPlayer" class="featured-iframe" src="" referrerpolicy="strict-origin-when-cross-origin" title="Featured video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div>
+          <span class="pill">Featured</span>
+          <h2 id="featuredTitle" style="margin:.6rem 0  .4rem; font-size:1.6rem;">15‑Minute Creamy Garlic Pasta</h2>
+          <p id="featuredDesc" class="muted">Weeknight‑friendly, ultra‑creamy pasta with pantry staples.</p>
+          <div class="muted" style="margin-top:.6rem; display:flex; gap:.6rem; font-size:.9rem;">
+            <span id="featuredWhen">today</span>
+            <span id="featuredViews"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest videos -->
+    <section id="videos" class="section">
+      <div class="container">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:.75rem; margin-bottom: .9rem;">
+          <h3 style="font-size:1.25rem;">Latest videos</h3>
+          <div class="searchbar">
+            <span>🔎</span>
+            <input id="searchInput" placeholder="Search recipes, e.g., pasta" />
+          </div>
+        </div>
+        <div id="gridVideos" class="grid videos"></div>
+        <p id="noResults" class="muted" style="display:none; margin-top:.5rem;">No videos match that search.</p>
+      </div>
+    </section>
+
+    <!-- Recipes showcase -->
+    <section id="recipes" class="section">
+      <div class="container">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:.9rem;">
+          <h3 style="font-size:1.25rem;">Trending recipes</h3>
+          <a class="btn" href="#videos">View all →</a>
+        </div>
+        <div class="grid" style="grid-template-columns: 1fr; gap:1rem;" id="recipesGrid"></div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section" style="background: color-mix(in oklab, var(--card) 70%, transparent); border-top:1px solid var(--border); scroll-margin-top: 90px;">
+      <div class="container" style="display:grid; gap:1.5rem;">
+        <div class="prose">
+          <h3>About the channel</h3>
+          <p>Ruth and Jean Claude, African immigrants in Canada for 20+ years, celebrate the fusion of their native cuisine with Canadian flavors in our food review channel. As non-experts but passionate food explorers, we seek diverse tastes, cultural connections, and friendships through shared meals. With joyful levity, we sample dishes, infusing humor into new gastronomic experiences. Canada's culinary realm, from Quebec's poutine to coastal seafood and Ontario's maple-infused dishes, narrates unique tales. Our goal is to savor and share these flavors, showcasing the cultural heritage behind each dish. Join our journey exploring Canada's diverse culinary scene as we encapsulate flavors and cultural depth in each meal through our videos, fostering an appreciation for diverse culinary identities.</p>
+          <ul>
+            <li>New uploads every Tuesday and Friday</li>
+            <li>Shorts for quick tips in under 60 seconds</li>
+            <li>Ingredient substitutions and budget variants in descriptions</li>
+          </ul>
+          <div style="display:flex; gap:.6rem; margin-top:.6rem; flex-wrap:wrap;">
+            <a class="btn primary" href="https://youtube.com/@ChopChopFoodChannel" target="_blank" rel="noreferrer">Subscribe on YouTube</a>
+            <!--<a class="btn" href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>-->
+          </div>
+        </div>
+        <div class="frame">
+          <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1600&auto=format&fit=crop" alt="About cooking" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section id="newsletter" class="section">
+      <div class="container" style="max-width: 720px;">
+        <div style="text-align:center;">
+          <h3 style="font-size:1.25rem;">Get new recipes in your inbox</h3>
+          <p class="muted" style="margin-top:.25rem;">One email per week. No spam, just tasty ideas.</p>
+        </div>
+        <!--<form id="newsletterForm"  action="https://formsubmit.co/lawlamp@gmail.com" method="POST" target="_blank" style="display:flex; gap:.5rem; margin-top: 1rem; flex-wrap: wrap;">
+          <input id="emailInput"  name="email" type="email" required placeholder="you@example.com" style="flex:1; min-width: 220px; padding:.7rem .85rem; border-radius:.8rem; border:1px solid var(&#45;&#45;border); background: var(&#45;&#45;card); color: var(&#45;&#45;text);" />
+          <input type="hidden" name="_autoresponse" value="Thank you for subscribing! We’ll be in touch soon.">
+          <button class="btn primary" type="submit">Subscribe</button>
+        </form>-->
+        <form id="newsletterForm" action="https://formsubmit.co/jcmarketing001@gmail.com" target="_blank" method="POST" style="display:flex; gap:.5rem; margin-top: 1rem; flex-wrap: wrap;">
+
+          <!-- Subscriber Email -->
+          <input id="emailInput" name="email" type="email" required
+                 placeholder="you@example.com"
+                 style="flex:1; min-width: 220px; padding:.7rem .85rem; border-radius:.8rem; border:1px solid var(--border); background: var(--card); color: var(--text);" />
+
+          <!-- Send an automated reply to the entered email -->
+          <input type="hidden" name="_autoresponse" value="Thank you for subscribing! We’ll be in touch soon.">
+
+          <!-- Optional: Change email subject -->
+          <input type="hidden" name="_subject" value="New Newsletter Subscription">
+
+          <!-- Optional: prevent spam -->
+          <input type="hidden" name="_captcha" value="false">
+
+          <button class="btn primary" type="submit">Subscribe</button>
+        </form>
+
+        <p id="thanksMsg" style="display:none; margin-top:.5rem; color:#22c55e; text-align:center;">Thanks. Please check your inbox.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container foot">
+      <p class="muted">© <span id="year"></span> Chop Chop. All rights reserved.</p>
+      <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
+        <a class="btn ghost" href="https://youtube.com/@ChopChopFoodChannel" target="_blank" rel="noreferrer">YouTube</a>
+        <a class="btn ghost" href="https://instagram.com/chopchopfoodchannel" target="_blank" rel="noreferrer">Instagram</a>
+        <a class="btn ghost" href="https://tiktok.com/@chopchopfoodchannel" target="_blank" rel="noreferrer">TikTok</a>
+        <a class="btn ghost" href="https://mail.google.com/mail/?view=cm&fs=1&to=jcmarketing001@gmail.com" target="_blank">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ========== CONFIG ==========
+    const YT_SETTINGS = {
+      apiKey: "AIzaSyC3Fn5xWiuq4AZeYokBpB70dAhtaXCj_GI", // ← add your YouTube Data API v3 key
+      channelId: "UCRcTuk13dASkymAkdp1Fttw", // ← add your channel ID
+      maxResults: 8,
+    };
+
+    // ========== SAMPLE DATA (fallback) ==========
+    const SAMPLE_VIDEOS = [
+      { id: "RU9yadndpPI", title: "Why This Fruit-Shaped Dessert Went Viral", thumbnail: "https://img.youtube.com/vi/RU9yadndpPI/hqdefault.jpg", publishedAt: "2025-11-02T12:00:00Z", description: "Why This Fruit-Shaped Dessert Went Viral", views: 43 },
+      { id: "7UucsadlIg0", title: "Best Lunch Options Under $20 in Calgary", thumbnail: "https://i.ytimg.com/vi/7UucsadlIg0/hqdefault.jpg", publishedAt: "2025-10-25T12:00:00Z", description: "Best Lunch Options Under $20 in Calgary.", views: 982 },
+      { id: "Rvq8aLhjl8E", title: "The Thanksgiving Dinner Feast Comparison You Didn't Know You Needed", thumbnail: "https://i.ytimg.com/vi/Rvq8aLhjl8E/hqdefault.jpg", publishedAt: "2025-10-13T12:00:00Z", description: "The Thanksgiving Dinner Feast Comparison You Didn't Know You Needed.", views: 1000 },
+      { id: "-SIFlgUw-yA", title: "Taste Testing KFC’s New Pickle Menu", thumbnail: "https://i.ytimg.com/vi/-SIFlgUw-yA/hqdefault.jpg", publishedAt: "2025-10-06T12:00:00Z", description: "Taste Testing KFC’s New Pickle Menu.", views: 1752 },
+    ];
+
+    const TRENDING_RECIPES = [
+      { title: "Sheet‑Pan Salmon & Veg", img: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop", tags: ["30‑min", "High‑protein", "Gluten‑free"] },
+      { title: "Fish Tacos", img: "https://images.immediate.co.uk/production/volatile/sites/30/2022/08/Fish-Tacos-1337495.jpg?quality=90&webp=true&resize=700,636?q=80&w=1200&auto=format&fit=crop", tags: ["Dinner", "Mexican"] },
+      { title: "Caramelized Banana Oats", img: "https://images.unsplash.com/photo-1481391032119-d89fee407e44?q=80&w=1200&auto=format&fit=crop", tags: ["Breakfast", "5‑ingredients"] },
+    ];
+
+    // ========== UTILITIES ==========
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    function num(n){
+      if(n === undefined || n === null) return "";
+      return new Intl.NumberFormat().format(n);
+    }
+    function timeAgo(iso){
+      const d = new Date(iso);
+      const diff = Date.now() - d.getTime();
+      const days = Math.floor(diff / (1000*60*60*24));
+      if(days < 1) return "today";
+      if(days < 7) return days+"d ago";
+      const weeks = Math.floor(days/7);
+      if(weeks < 5) return weeks+"w ago";
+      const months = Math.floor(days/30);
+      if(months < 12) return months+"mo ago";
+      const years = Math.floor(days/365);
+      return years+"y ago";
+    }
+
+    // ========== STATE ==========
+    let videos = [...SAMPLE_VIDEOS];
+    let featured = {...SAMPLE_VIDEOS[0]};
+
+    // ========== RENDER ==========
+
+    function renderFeatured() {
+      const player = document.getElementById("featuredPlayer");
+      const title = document.getElementById("featuredTitle");
+      const desc = document.getElementById("featuredDesc");
+      const when = document.getElementById("featuredWhen");
+      const views = document.getElementById("featuredViews");
+
+      player.src = `https://www.youtube-nocookie.com/embed/${featured.id}?autoplay=1&mute=1`;
+      title.textContent = featured.title;
+      desc.textContent = featured.description || "";
+      when.textContent = timeAgo(featured.publishedAt);
+      views.textContent = featured.views ? `• ${num(featured.views)} views` : "";
+    }
+
+
+    function renderGrid(list) {
+      const grid = document.getElementById("gridVideos");
+      grid.innerHTML = "";
+
+      list.forEach(v => {
+        const card = document.createElement("article");
+      card.className = "card";
+
+      card.innerHTML = `
+      <button class="thumb" aria-label="Play ${v.title}">
+        <img src="${v.thumbnail}" alt="${v.title}">
+        <span class="watch-pill">▶ Watch</span>
+      </button>
+      <div class="card-body">
+        <div class="title">${v.title}</div>
+        <div class="desc">${v.description || ""}</div>
+        <div class="meta">
+          <span>${timeAgo(v.publishedAt)}</span>
+          <span>${v.views ? num(v.views) + " views" : "YouTube"}</span>
+        </div>
+      </div>
+    `;
+
+      card.querySelector(".thumb").addEventListener("click", () => {
+        featured = v;
+      renderFeatured();
+      window.scrollTo({
+        top: document.getElementById("featured").offsetTop - 64,
+        behavior: "smooth"
+      });
+    });
+
+      grid.appendChild(card);
+    });
+    }
+
+
+    function renderRecipes(){
+      const wrap = document.getElementById("recipesGrid");
+      wrap.style.gridTemplateColumns = window.innerWidth >= 768 ? "repeat(3, 1fr)" : "1fr";
+      wrap.innerHTML = "";
+      TRENDING_RECIPES.forEach(r => {
+        const card = document.createElement("article");
+        card.className = "card";
+        const tags = r.tags.map(t => `<span class="pill" style="margin-right:.35rem;">${t}</span>`).join("");
+        card.innerHTML = `
+          <div class="thumb" style="aspect-ratio:4/3;">
+            <img src="${r.img}" alt="${r.title}">
+          </div>
+          <div class="card-body">
+            <div class="title">${r.title}</div>
+            <div class="desc">${tags}</div>
+          </div>`;
+        wrap.appendChild(card);
+      });
+    }
+
+    // ========== SEARCH ==========
+    function applySearch(){
+      const q = $("#searchInput").value.trim().toLowerCase();
+      const filtered = q ? videos.filter(v => v.title.toLowerCase().includes(q) || (v.description||"").toLowerCase().includes(q)) : videos;
+      $("#noResults").style.display = filtered.length ? "none" : "block";
+      renderGrid(filtered);
+    }
+
+    // ========== YOUTUBE API FETCH ==========
+    async function tryLoadFromYouTube(){
+      const { apiKey, channelId, maxResults } = YT_SETTINGS;
+      if(!apiKey || !channelId) return; // keep sample data
+      try {
+        const base = new URL("https://www.googleapis.com/youtube/v3/search");
+        base.searchParams.set("key", apiKey);
+        base.searchParams.set("channelId", channelId);
+        base.searchParams.set("part", "snippet");
+        base.searchParams.set("order", "date");
+        base.searchParams.set("maxResults", String(maxResults || 8));
+        const res = await fetch(base.toString());
+        const data = await res.json();
+        const items = (data.items||[]).filter(it => it.id && it.id.videoId);
+        const ids = items.map(it => it.id.videoId).join(",");
+        let statsMap = {};
+        if(ids){
+          const sUrl = new URL("https://www.googleapis.com/youtube/v3/videos");
+          sUrl.searchParams.set("key", apiKey);
+          sUrl.searchParams.set("id", ids);
+          sUrl.searchParams.set("part", "statistics");
+          const sRes = await fetch(sUrl.toString());
+          const sData = await sRes.json();
+          (sData.items||[]).forEach(v => statsMap[v.id] = Number(v.statistics?.viewCount||0));
+        }
+        const parsed = items.map(it => ({
+          id: it.id.videoId,
+          title: it.snippet.title,
+          thumbnail: it.snippet.thumbnails?.high?.url || it.snippet.thumbnails?.medium?.url,
+          publishedAt: it.snippet.publishedAt,
+          description: it.snippet.description,
+          views: statsMap[it.id.videoId],
+        }));
+        if(parsed.length){
+          videos = parsed;
+          featured = parsed[0];
+        }
+      } catch (e) {
+        console.warn("YouTube API error. Using sample data.", e);
+      }
+    }
+
+    // ========== EVENTS ==========
+    document.getElementById("watchLatest").addEventListener("click", () => {
+      document.getElementById("videos").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    /*document.getElementById("newsletterForm").addEventListener("submit", (e) => {
+      //e.preventDefault();
+      // TODO: connect to your email service
+      document.getElementById("thanksMsg").style.display = "block";
+    });*/
+
+    document.getElementById("themeBtn").addEventListener("click", () => {
+      const light = document.documentElement.classList.toggle("light");
+      document.getElementById("themeBtn").textContent = light ? "☀️" : "🌙";
+    });
+
+    document.getElementById("searchInput").addEventListener("input", applySearch);
+
+    // ========== INIT ==========
+    (async function init(){
+      document.getElementById("year").textContent = new Date().getFullYear();
+      await tryLoadFromYouTube();
+      renderFeatured();
+      renderGrid(videos);
+      renderRecipes();
+      applySearch();
+      window.addEventListener('resize', renderRecipes);
+    })();
+  </script>
+</body>
+</html>
