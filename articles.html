@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chop Chop | Articles</title>
+  <link rel="icon" type="image/jpeg" href="channels4_profile.jpg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+      <div class="container row">
+        <a class="brand" href="index.html">
+          <img src="channels4_profile.jpg" />
+          <span>Chop Chop</span>
+        </a>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="store.html">Shop</a>
+          <a href="articles.html">Articles</a>
+        </nav>
+
+        <button class="btn ghost" id="themeBtn">🌙</button>
+      </div>
+</header>
+
+<section class="section" style="padding-top:100px;">
+  <div class="container">
+    <h1>Food Stories & Articles</h1>
+    <p class="muted">Stories, cooking hacks, restaurant experiences and culture.</p>
+
+    <div id="articlesList" style="margin-top:2rem;"></div>
+  </div>
+</section>
+
+<script src="theme.js"></script>
+<script>
+  const articles = [
+    {
+      title: "How Immigrant Food Shapes Canada",
+      date: "Nov 2025",
+      img: "https://images.unsplash.com/photo-1478145046317-39f10e56b5e9?q=80&w=800&auto=format",
+      desc: "Exploring how immigrant kitchens have shaped Canada’s culinary identity.",
+      link: "articles/immigrant-food.html"
+    },
+    {
+      title: "5 Budget Meals That Taste Expensive",
+      date: "Oct 2025",
+      img: "https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=800&auto=format",
+      desc: "Delicious meals that stretch your dollar without sacrificing flavor.",
+      link: "articles/budget-meals.html"
+    },
+    {
+      title: "Why We Love Fusion Cooking",
+      date: "Sep 2025",
+      img: "https://images.unsplash.com/photo-1481391032119-d89fee407e44?q=80&w=1200&auto=format&fit=crop",
+      desc: "Blending traditions to create something fresh and exciting.",
+      link: "articles/fusion-meals.html"
+    }
+  ];
+
+  const list = document.getElementById("articlesList");
+  list.innerHTML = articles.map(a => `
+  <article class="article-card">
+    <img src="${a.img}" alt="${a.title}">
+    <div>
+      <h3>${a.title}</h3>
+      <p class="muted" style="margin:.25rem 0;">${a.date}</p>
+      <p style="margin:.35rem 0 1rem;">${a.desc}</p>
+      <a class="btn" href="${a.link}">Read →</a>
+    </div>
+  </article>
+`).join("");
+</script>
+
+</body>
+</html>
