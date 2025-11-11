@@ -187,9 +187,9 @@
      :root {
          --header-height: 80px;
      }
-     .scroll-btn {
+     /*.scroll-btn {
          display: none !important;
-     }
+     }*/
  }
  @media (max-width: 600px) {
      :root {
@@ -213,9 +213,9 @@
      .mobile-nav-pair {
          display: block;
      }
-     .scroll-btn {
+     /*.scroll-btn {
          display: none !important;
-     }
+     }*/
  }
 
  html {
