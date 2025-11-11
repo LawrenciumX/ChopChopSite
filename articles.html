@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Chop Chop | Articles</title>
   <link rel="icon" type="image/jpeg" href="channels4_profile.jpg">
   <link rel="stylesheet" href="style.css">
@@ -27,14 +28,20 @@
 
 <section class="section" style="padding-top:100px;">
   <div class="container">
+
+    <div class="mobile-nav-pair" style="margin-bottom: .9rem; text-align: center">
+      <a class="btn" href="./index.html">Home</a>
+      <a class="btn" href="./store.html">Shop</a>
+    </div>
+
     <div style="display:flex; align-items:center; justify-content:space-between; gap:.75rem; margin-bottom: .9rem;">
-      <div class="searchbar">
+      <div class="searchbar" style="flex:1;">
         <span>🔎</span>
         <input id="searchInput" placeholder="Search articles " />
       </div>
     </div>
     <div id="gridVideos" class="grid videos"></div>
-    <p id="noResults" class="muted" style="display:none; margin-top:.5rem;">No videos match that search.</p>
+    <p id="noResults" class="muted" style="display:none; margin-top:.5rem;">No articles match that search.</p>
     <h1>Food Stories & Articles</h1>
     <p class="muted">Stories, cooking hacks, restaurant experiences and culture.</p>
 

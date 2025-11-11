@@ -175,3 +175,29 @@
  #articlesList.fade-out {
      opacity: 0;
  }
+
+ .mobile-nav-pair {
+     display: none;
+ }
+
+ /* Make text slightly larger on mobile */
+ @media (max-width: 600px) {
+     html {
+         font-size: 18px; /* adjust to 19px or 20px if you want bigger */
+     }
+
+     .card .title {
+         font-size: 1.1rem;
+     }
+
+     .card .meta {
+         font-size: 1rem;
+     }
+
+     .nav a {
+         font-size: 1rem;
+     }
+     .mobile-nav-pair {
+         display: block;
+     }
+ }
