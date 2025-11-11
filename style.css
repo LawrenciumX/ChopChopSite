@@ -201,3 +201,8 @@
          display: block;
      }
  }
+
+ /* Prevent header from covering anchor targets */
+ .section {
+     scroll-margin-top: 90px;
+ }
