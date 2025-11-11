@@ -18,14 +18,14 @@
         <span>Chop Chop</span>
       </a>
       <nav>
-        <a href="#home">Home</a>
-        <a href="#featured">Featured</a>
-        <a href="#videos">Videos</a>
-        <a href="#recipes">Recipes</a>
-        <a href="#about">About</a>
-        <a href="#newsletter">Subscribe</a>
-        <a href="articles.html">Articles</a>
-        <a href="store.html">Shop</a>
+        <a class="scroll-btn" href="#home">Home</a>
+        <a class="scroll-btn" href="#featured">Featured</a>
+        <a class="scroll-btn" href="#videos">Videos</a>
+        <a class="scroll-btn" href="#recipes">Recipes</a>
+        <a class="scroll-btn" href="#about">About</a>
+        <a class="scroll-btn" href="#newsletter">Subscribe</a>
+        <a class="scroll-btn" href="articles.html">Articles</a>
+        <a class="scroll-btn" href="store.html">Shop</a>
       </nav>
       <div style="display:flex; gap:.5rem; align-items:center; transform: translateX(-1rem);">
         <button class="btn ghost" id="themeBtn" aria-label="Toggle theme">🌙</button>
@@ -43,8 +43,8 @@
           <h1>Flavor Explorers. Eat better. <span style="color:var(--primary)">Have fun.</span></h1>
           <p> As non-experts but passionate food explorers, we seek diverse tastes, cultural connections, and friendships through shared meals.</p>
           <div style="display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1rem;">
-            <button class="btn primary" id="watchLatest">▶ Watch latest</button>
-            <a class="btn" href="#newsletter">Get recipes</a>
+            <button class="btn primary scroll-btn" id="watchLatest">▶ Watch latest</button>
+            <a class="btn scroll-btn" href="#newsletter">Get recipes</a>
             <a class="btn" href="articles.html">Food Articles</a>
             <a class="btn" href="store.html">Shop</a>
           </div>
@@ -93,7 +93,7 @@
       <div class="container">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:.9rem;">
           <h3 style="font-size:1.25rem;">Trending recipes</h3>
-          <a class="btn" href="#videos">View all →</a>
+          <a class="btn scroll-btn" href="#videos">View all →</a>
         </div>
         <div class="grid" style="grid-template-columns: 1fr; gap:1rem;" id="recipesGrid"></div>
       </div>
