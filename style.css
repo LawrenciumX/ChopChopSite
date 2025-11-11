@@ -212,7 +212,7 @@
      }
  }
 
- /* Prevent header from covering anchor targets */
- section {
-     scroll-margin-top: var(--header-height);
+ html {
+     scroll-behavior: smooth;
+     scroll-padding-top: var(--header-height);
  }
