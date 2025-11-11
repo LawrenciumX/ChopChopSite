@@ -7,6 +7,7 @@
       --primary: /*#ff5d57;*/ #B59410;
       --ring: rgba(255,255,255,0.06);
       --shadow: 0 8px 20px rgba(0,0,0,0.25);
+     --header-height: 90px;
     }
     :root.light {
       --bg: #ffffff;
@@ -181,7 +182,16 @@
  }
 
  /* Make text slightly larger on mobile */
+ /* On tablet, header height shrinks a bit */
+ @media (max-width: 900px) {
+     :root {
+         --header-height: 80px;
+     }
+ }
  @media (max-width: 600px) {
+     :root {
+         --header-height: 70px;
+     }
      html {
          font-size: 18px; /* adjust to 19px or 20px if you want bigger */
      }
@@ -204,5 +214,5 @@
 
  /* Prevent header from covering anchor targets */
  section {
-     scroll-margin-top: 90px;
+     scroll-margin-top: var(--header-height);
  }
