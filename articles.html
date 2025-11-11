@@ -24,14 +24,35 @@
       </div>
 </header>
 
+
 <section class="section" style="padding-top:100px;">
   <div class="container">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:.75rem; margin-bottom: .9rem;">
+      <div class="searchbar">
+        <span>🔎</span>
+        <input id="searchInput" placeholder="Search articles " />
+      </div>
+    </div>
+    <div id="gridVideos" class="grid videos"></div>
+    <p id="noResults" class="muted" style="display:none; margin-top:.5rem;">No videos match that search.</p>
     <h1>Food Stories & Articles</h1>
     <p class="muted">Stories, cooking hacks, restaurant experiences and culture.</p>
 
     <div id="articlesList" style="margin-top:2rem;"></div>
   </div>
 </section>
+
+<footer>
+  <div class="container foot">
+    <p class="muted" style="transform: translateX(2rem);">© <span id="year"></span> Chop Chop. All rights reserved.</p>
+    <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
+      <a class="btn ghost" href="https://youtube.com/@ChopChopFoodChannel" target="_blank" rel="noreferrer">YouTube</a>
+      <a class="btn ghost" href="https://instagram.com/chopchopfoodchannel" target="_blank" rel="noreferrer">Instagram</a>
+      <a class="btn ghost" href="https://tiktok.com/@chopchopfoodchannel" target="_blank" rel="noreferrer">TikTok</a>
+      <a class="btn ghost" href="https://mail.google.com/mail/?view=cm&fs=1&to=jcmarketing001@gmail.com" target="_blank">Contact</a>
+    </div>
+  </div>
+</footer>
 
 <script src="theme.js"></script>
 <script>
@@ -60,17 +81,50 @@
   ];
 
   const list = document.getElementById("articlesList");
-  list.innerHTML = articles.map(a => `
-  <article class="article-card">
-    <img src="${a.img}" alt="${a.title}">
-    <div>
-      <h3>${a.title}</h3>
-      <p class="muted" style="margin:.25rem 0;">${a.date}</p>
-      <p style="margin:.35rem 0 1rem;">${a.desc}</p>
-      <a class="btn" href="${a.link}">Read →</a>
-    </div>
-  </article>
-`).join("");
+  function renderArticles(items) {
+    // Fade out
+    list.classList.add("fade-out");
+
+    setTimeout(() => {
+      list.innerHTML = items.map(a => `
+      <article class="article-card">
+        <img src="${a.img}" alt="${a.title}">
+        <div>
+          <h3>${a.title}</h3>
+          <p class="muted" style="margin:.25rem 0;">${a.date}</p>
+          <p style="margin:.35rem 0 1rem;">${a.desc}</p>
+          <a class="btn" href="${a.link}">Read →</a>
+        </div>
+      </article>
+    `).join("");
+
+    // Fade back in
+    list.classList.remove("fade-out");
+
+    // ✅ Re-enable transitions for new links
+    enablePageTransitions();
+
+  }, 400); // small delay to let fade-out apply
+  }
+
+
+  document.getElementById("searchInput").addEventListener("input", applySearch);
+  function applySearch(){
+    const q = document.getElementById("searchInput").value.trim().toLowerCase();
+    const filtered = q
+            ? articles.filter(a =>
+    a.title.toLowerCase().includes(q) ||
+    a.desc.toLowerCase().includes(q)
+  )
+  : articles;
+
+    document.getElementById("noResults").style.display = filtered.length ? "none" : "block";
+    renderArticles(filtered);
+  }
+
+  // Run on page load
+  renderArticles(articles);
+
 </script>
 
 </body>

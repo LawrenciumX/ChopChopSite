@@ -16,7 +16,7 @@ if (themeBtn) {
 }
 
 // Smooth Page Transitions
-document.addEventListener("DOMContentLoaded", () => {
+/*document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.remove("page-transition");
 
 document.querySelectorAll("a[href]").forEach(link => {
@@ -31,4 +31,25 @@ setTimeout(() => {
 }, 450);
 });
 });
+});*/
+
+function enablePageTransitions() {
+  document.querySelectorAll("a[href]").forEach(link => {
+    const url = link.getAttribute("href");
+  if (!url || url.startsWith("#") || link.target === "_blank") return;
+
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+  document.body.classList.add("page-transition");
+  setTimeout(() => {
+    window.location.href = url;
+}, 450);
 });
+});
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.remove("page-transition");
+enablePageTransitions(); // initial page load
+});
+
