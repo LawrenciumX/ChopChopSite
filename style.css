@@ -194,7 +194,7 @@
          font-size: 1rem;
      }
 
-     .nav a {
+     nav a {
          font-size: 1rem;
      }
      .mobile-nav-pair {
@@ -203,6 +203,6 @@
  }
 
  /* Prevent header from covering anchor targets */
- .section {
+ section {
      scroll-margin-top: 90px;
  }
