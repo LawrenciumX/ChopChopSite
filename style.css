@@ -242,3 +242,9 @@
      scroll-behavior: smooth;
      scroll-padding-top: var(--header-height);
  }
+
+ .btn.ghost {
+     border: none;
+     background: none;
+     box-shadow: none;
+ }
