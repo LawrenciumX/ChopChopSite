@@ -37,52 +37,6 @@
     <p class="muted">Merch, spices, kitchen tools, sauces coming soon.</p>
 
     <div class="store-grid" style="margin-top:2rem;">
-
-      <div class="card">
-        <div class="thumb">
-          <img src="https://cdn.thewirecutter.com/wp-content/media/2024/11/spatula-2048px-4592.jpg?auto=webp&quality=75&width=980&dpr=2" alt="Item">
-        </div>
-        <div class="card-body">
-          <div class="title">Signature Spatula</div>
-          <div class="meta">$12</div>
-          <button class="btn primary" style="margin-top:.6rem;">Buy</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="thumb">
-          <img src="https://learnphood.com/wp-content/uploads/2020/11/Phood3696.jpg" alt="Item">
-        </div>
-        <div class="card-body">
-          <div class="title">Signature Dessert</div>
-          <div class="meta">$25</div>
-          <button class="btn primary" style="margin-top:.6rem;">Buy</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="thumb">
-          <img src="https://images.squarespace-cdn.com/content/v1/582175db197aea631e3e4812/1567632538547-NH211DGAH2KDUH1O586X/IMG_1188.jpg?format=2500w" alt="Item">
-        </div>
-        <div class="card-body">
-          <div class="title">Snacks</div>
-          <div class="meta">$10</div>
-          <button class="btn primary" style="margin-top:.6rem;">Buy</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="thumb">
-          <img src="https://as2.ftcdn.net/v2/jpg/12/29/54/53/1000_F_1229545365_2jbwNqIKWVu6WqCALD2h3ynEqdRJUYd5.webp" alt="Item">
-        </div>
-        <div class="card-body">
-          <div class="title">Fruits</div>
-          <div class="meta">$5</div>
-          <button class="btn primary" style="margin-top:.6rem;">Buy</button>
-        </div>
-      </div>
-
-      <!-- Copy and repeat for more products -->
     </div>
 
   </div>
@@ -99,6 +53,129 @@
   </div>
 </footer>
 <script src="theme.js"></script>
+<script>
+  // 🛍️ Product list
+  const paypalBase = "https://paypal.me/yourname";
+  const products = [
+    {
+      title: "Signature Spatula",
+      price: "$12",
+      amount: 12,
+      img: "https://cdn.thewirecutter.com/wp-content/media/2024/11/spatula-2048px-4592.jpg?auto=webp&quality=75&width=980&dpr=2",
+      desc: "Durable stainless steel spatula with wooden handle — perfect for flipping and stirring.",
+      link: "#"
+    },
+    {
+      title: "Signature Dessert",
+      price: "$25",
+      amount: 25,
+      img: "https://learnphood.com/wp-content/uploads/2020/11/Phood3696.jpg",
+      desc: "A sweet treat made with our secret house recipe.",
+      link: "#"
+    },
+    {
+      title: "Snacks",
+      price: "$10",
+      amount: 10,
+      img: "https://images.squarespace-cdn.com/content/v1/582175db197aea631e3e4812/1567632538547-NH211DGAH2KDUH1O586X/IMG_1188.jpg?format=2500w",
+      desc: "Crispy, tasty bites for any occasion.",
+      link: "#"
+    },
+    {
+      title: "Fruits",
+      price: "$5",
+      amount: 5,
+      img: "https://as2.ftcdn.net/v2/jpg/12/29/54/53/1000_F_1229545365_2jbwNqIKWVu6WqCALD2h3ynEqdRJUYd5.webp",
+      desc: "Fresh, hand-picked seasonal fruits.",
+      link: "#"
+    }
+  ];
+
+  const storeGrid = document.querySelector(".store-grid");
+
+  function renderProducts(items) {
+    storeGrid.classList.add("fade-out");
+
+    setTimeout(() => {
+      storeGrid.innerHTML = items.map(p => `
+      <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;padding:1rem; border-radius:1rem; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+        <div>
+          <div class="thumb">
+            <img src="${p.img}" alt="${p.title}">
+          </div>
+          <div class="card-body">
+            <div class="title"  style="font-weight:700;">${p.title}</div>
+            <div class="meta" style="color:var(--primary); font-size:1.25rem; font-weight:700; margin:.35rem 0;">${p.price}</div>
+            <p class="muted" style="margin:.5rem 0;">${p.desc}</p>
+          </div>
+        </div>
+        <button class="btn primary" style="margin-top:auto; margin-bottom:.6rem;width:60px;"
+       onclick="window.open('${paypalBase}/${p.amount}?note=${encodeURIComponent(p.title)}', '_blank')"
+        >Buy</button>
+      </div>
+    `).join("");
+
+    // smooth fade-in
+    storeGrid.classList.remove("fade-out");
+    enablePageTransitions();
+  }, 300);
+  }
+
+
+  // 🔍 Add search bar dynamically
+  /*const searchWrapper = document.createElement("div");
+  searchWrapper.style = "display:flex; align-items:center; justify-content:center; margin:1rem auto; max-width:400px; gap:.5rem;";
+  searchWrapper.innerHTML = `
+    <span>🔎</span>
+    <input id="searchProducts" placeholder="Search products" style="flex:1; padding:.6rem .8rem; border-radius:.8rem; border:1px solid var(--border); background: var(--card); color: var(--text);" />
+  `;
+  document.querySelector("section .container").insertBefore(searchWrapper, storeGrid);*/
+
+  const searchWrapper = document.createElement("div");
+  searchWrapper.style = `
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:1rem auto;
+  max-width:400px;
+  gap:.5rem;
+  border-bottom:1px solid var(--border);
+  padding-bottom:.25rem;
+`;
+
+  searchWrapper.innerHTML = `
+  <span style="font-size:1.1rem; opacity:0.8;">🔍</span>
+  <input id="searchProducts"
+         placeholder="Search products"
+         style="flex:1; border:none; outline:none; background:none; color:var(--text);
+                font-size:1rem; padding:.3rem 0;" />
+`;
+
+  document.querySelector("section .container").insertBefore(searchWrapper, storeGrid);
+
+  const noResults = document.createElement("p");
+  noResults.id = "noResults";
+  noResults.textContent = "No products match that search.";
+  noResults.className = "muted";
+  noResults.style = "display:none; margin-top:.5rem;";
+  document.querySelector("section .container").insertBefore(noResults, storeGrid);
+
+  // Search handler
+  document.getElementById("searchProducts").addEventListener("input", function() {
+    const q = this.value.trim().toLowerCase();
+    const filtered = q
+            ? products.filter(p =>
+    p.title.toLowerCase().includes(q) ||
+    p.desc.toLowerCase().includes(q)
+    )
+    : products;
+    noResults.style.display = filtered.length ? "none" : "block";
+    renderProducts(filtered);
+  });
+
+  // Initial load
+  renderProducts(products);
+</script>
 
 </body>
 </html>

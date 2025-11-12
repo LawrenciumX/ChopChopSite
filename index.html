@@ -78,9 +78,18 @@
       <div class="container">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:.75rem; margin-bottom: .9rem;">
           <h3 style="font-size:1.25rem;">Latest videos</h3>
-          <div class="searchbar">
+          <!--<div class="searchbar">
             <span>🔎</span>
             <input id="searchInput" placeholder="Search recipes, e.g., pasta" />
+          </div>-->
+          <div style="display:flex; align-items:center; justify-content:flex-start;
+            margin:1rem 0; max-width:400px; gap:.5rem;
+            border-bottom:1px solid var(--border); padding-bottom:.25rem;">
+            <span style="font-size:1.1rem; opacity:0.8;">🔍</span>
+            <input id="searchInput"
+                   placeholder="Search recipes, e.g., pasta"
+                   style="flex:1; border:none; outline:none; background:none; color:var(--text);
+                font-size:1rem; padding:.3rem 0; text-align:left;" />
           </div>
         </div>
         <div id="gridVideos" class="grid videos"></div>
@@ -293,12 +302,41 @@
     }
 
     // ========== SEARCH ==========
-    function applySearch(){
+    /*function applySearch(){
       const q = $("#searchInput").value.trim().toLowerCase();
       const filtered = q ? videos.filter(v => v.title.toLowerCase().includes(q) || (v.description||"").toLowerCase().includes(q)) : videos;
       $("#noResults").style.display = filtered.length ? "none" : "block";
       renderGrid(filtered);
+    }*/
+
+    function applySearch() {
+      const q = $("#searchInput").value.trim().toLowerCase();
+      const filtered = q
+              ? videos.filter(v =>
+      v.title.toLowerCase().includes(q) ||
+      (v.description || "").toLowerCase().includes(q)
+    )
+    : videos;
+
+      const grid = $("#gridVideos");
+      const noResults = $("#noResults");
+
+      // Fade out before updating content
+      grid.classList.add("fade-out");
+
+      setTimeout(() => {
+        renderGrid(filtered);
+
+      // Fade back in after re-render
+      requestAnimationFrame(() => {
+        grid.classList.remove("fade-out");
+    });
+
+      // Handle "no results" message
+      noResults.style.display = filtered.length ? "none" : "block";
+    }, 300); // match your CSS transition (e.g., .25s ease)
     }
+
 
     // ========== YOUTUBE API FETCH ==========
     async function tryLoadFromYouTube(){
