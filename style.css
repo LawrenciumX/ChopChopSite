@@ -207,7 +207,7 @@
          --header-height: 70px;
      }
      html {
-         font-size: 18px; /* adjust to 19px or 20px if you want bigger */
+         font-size: 16px; /* adjust to 19px or 20px if you want bigger */
      }
 
      .card .title {
