@@ -48,8 +48,17 @@ function enablePageTransitions() {
 });
 }
 
+// On initial load
 document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.remove("page-transition");
 enablePageTransitions(); // initial page load
+});
+
+// ⭐ CRITICAL FIX: When pressing back, reload transitions correctly
+window.addEventListener("pageshow", (event) => {
+  // If the page was restored from the cache
+  if (event.persisted) {
+  document.body.classList.remove("page-transition");
+}
 });
 
