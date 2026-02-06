@@ -348,6 +348,11 @@
     }, 300); // match your CSS transition (e.g., .25s ease)
     }
 
+    const decodeHtml = (html) => {
+      const txt = document.createElement('textarea');
+      txt.innerHTML = html;
+      return txt.value;
+    };
 
     // ========== YOUTUBE API FETCH ==========
     async function tryLoadFromYouTube(){
@@ -376,7 +381,7 @@
         }
         const parsed = items.map(it => ({
           id: it.id.videoId,
-          title: it.snippet.title,
+          title: decodeHtml(it.snippet.title),
           thumbnail: it.snippet.thumbnails?.high?.url || it.snippet.thumbnails?.medium?.url,
           publishedAt: it.snippet.publishedAt,
           description: it.snippet.description,
